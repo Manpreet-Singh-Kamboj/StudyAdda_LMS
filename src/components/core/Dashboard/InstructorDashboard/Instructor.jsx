@@ -48,7 +48,7 @@ export default function Instructor() {
         </div>
         {loading ? (
           <div className="spinner"></div>
-        ) : courses.length > 0 ? (
+        ) : courses.length > 0 ? ( 
           <div>
             <div className="my-4 flex h-[450px] space-x-4">
               {/* Render chart / graph */}

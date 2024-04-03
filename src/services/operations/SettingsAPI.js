@@ -49,7 +49,7 @@ export function updateProfile(token, formData) {
   return async (dispatch) => {
     const toastId = toast.loading("Loading...")
     try {
-      console.log("Tokensknd" ,token)
+      console.log("Token" ,token)
       const response = await apiConnector("PUT", UPDATE_PROFILE_API, formData, {
         Authorization: `Bearer ${token}`,
       })
