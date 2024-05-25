@@ -1,20 +1,16 @@
-import React, { useEffect, useState } from 'react'
-import RatingStars from '../../common/RatingStars'
-import GetAvgRating from '../../../utils/avgRating';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import RatingStars from "../../common/RatingStars";
+import GetAvgRating from "../../../utils/avgRating";
+import { Link } from "react-router-dom";
 
-const Course_Card = ({course, Height}) => {
+const Course_Card = ({ course, Height }) => {
+  const [avgReviewCount, setAvgReviewCount] = useState(0);
 
+  useEffect(() => {
+    const count = GetAvgRating(course.ratingAndReviews);
+    setAvgReviewCount(count);
+  }, [course]);
 
-    const [avgReviewCount, setAvgReviewCount] = useState(0);
-
-    useEffect(()=> {
-        const count = GetAvgRating(course.ratingAndReviews);
-        setAvgReviewCount(count);
-    },[course])
-
-
-    
   return (
     <>
       <Link to={`/courses/${course._id}`}>
@@ -22,7 +18,7 @@ const Course_Card = ({course, Height}) => {
           <div className="rounded-lg">
             <img
               src={course?.thumbnail}
-              alt="course thumnail"
+              alt="course thumbnail"
               className={`${Height} w-full rounded-xl object-cover `}
             />
           </div>
@@ -43,7 +39,7 @@ const Course_Card = ({course, Height}) => {
         </div>
       </Link>
     </>
-  )
-}
+  );
+};
 
-export default Course_Card
+export default Course_Card;
