@@ -158,38 +158,56 @@ function Navbar() {
         <div className="md:hidden fixed h-full top-[60px] left-0 right-0 bg-richblack-800 z-10 py-2">
           <ul className="text-richblack-25 text-center py-5">
             {NavbarLinks.map((link, index) => (
-              <li key={index} className="py-5">
-                <Link
-                  to={link?.path}
-                  onClick={
-                    link.title === "Catalog" ? showSublist : showMobileNav
-                  }
-                >
-                  <p className="py-2 block">{link.title}</p>
-                  {link.title === "Catalog" && showSublistMenu && (
-                    <>
-                      {subLinks
-                        ?.filter((subLink) => subLink?.courses?.length > 0)
-                        ?.map((subLink, i) => (
-                          <Link
-                            to={`/catalog/${subLink.name
-                              .split(" ")
-                              .join("-")
-                              .toLowerCase()}`}
-                            className="rounded-lg flex justify-center w-full bg-transparent py-4 px-5 hover:bg-richblack-50"
-                            onClick={showMobileNav}
-                            key={i}
-                          >
-                            <p className="bg-white text-black px-2 py-2 w-full">
-                              {subLink.name}
-                            </p>
-                          </Link>
-                        ))}
-                    </>
-                  )}
-                </Link>
-              </li>
+              <>
+                <li key={index} className="py-5">
+                  <Link
+                    to={link?.path}
+                    onClick={
+                      link.title === "Catalog" ? showSublist : showMobileNav
+                    }
+                  >
+                    <p className="py-2 block">{link.title}</p>
+                    {link.title === "Catalog" && showSublistMenu && (
+                      <>
+                        {subLinks
+                          ?.filter((subLink) => subLink?.courses?.length > 0)
+                          ?.map((subLink, i) => (
+                            <Link
+                              to={`/catalog/${subLink.name
+                                .split(" ")
+                                .join("-")
+                                .toLowerCase()}`}
+                              className="rounded-lg flex justify-center w-full bg-transparent py-4 px-5 hover:bg-richblack-50"
+                              onClick={showMobileNav}
+                              key={i}
+                            >
+                              <p className="bg-white text-black px-2 py-2 w-full">
+                                {subLink.name}
+                              </p>
+                            </Link>
+                          ))}
+                      </>
+                    )}
+                  </Link>
+                </li>
+              </>
             ))}
+            <div className="flex justify-center items-center gap-10 md:hidden">
+              {token === null && (
+                <Link to="/login" onClick={showMobileNav}>
+                  <button className="rounded-[8px] border border-richblack-700 bg-richblack-800 px-[12px] py-[8px] text-richblack-100">
+                    Log in
+                  </button>
+                </Link>
+              )}
+              {token === null && (
+                <Link to="/signup" onClick={showMobileNav}>
+                  <button className="rounded-[8px] border border-richblack-700 bg-richblack-800 px-[12px] py-[8px] text-richblack-100">
+                    Sign up
+                  </button>
+                </Link>
+              )}
+            </div>
           </ul>
         </div>
       )}
