@@ -17,18 +17,9 @@ function Navbar() {
   const { totalItems } = useSelector((state) => state.cart);
   const location = useLocation();
   const [showMobileNavbar, setShowMobileNavbar] = useState(false);
+  const [showSublistMenu, setShowSublistMenu] = useState(false);
   const [subLinks, setSubLinks] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [showSublistMenu, setShowSublistMenu] = useState(false);
-
-  useEffect(() => {
-    const body = document.querySelector("body");
-    if (showMobileNavbar) {
-      body.style.overflow = "hidden";
-    } else {
-      body.style.overflow = "unset";
-    }
-  }, [showMobileNavbar]);
 
   useEffect(() => {
     (async () => {
@@ -43,12 +34,14 @@ function Navbar() {
     })();
   }, []);
 
+  // console.log("sub links", subLinks)
+
   const showMobileNav = () => {
-    setShowMobileNavbar((prev) => !prev);
+    setShowMobileNavbar(!showMobileNavbar);
   };
 
   const showSublist = () => {
-    setShowSublistMenu((prev) => !prev);
+    setShowSublistMenu(!showSublistMenu);
   };
 
   const matchRoute = (route) => {
@@ -62,14 +55,12 @@ function Navbar() {
       } transition-all duration-200`}
     >
       <div className="flex w-11/12 max-w-maxContent object-cover items-center justify-between">
+        {/* Logo */}
         <Link to="/">
+          {/* <h2 className="text-white font-bold text-xl">Study Adda</h2> */}
           <img src={logo} alt="Logo" width={160} height={32} loading="lazy" />
         </Link>
-        <div className="md:hidden">
-          <button className="mr-4" onClick={showMobileNav}>
-            <AiOutlineMenu fontSize={24} fill="#AFB2BF" />
-          </button>
-        </div>
+        {/* Navigation links */}
         <nav className="hidden md:block">
           <ul className="flex gap-x-6 text-richblack-25">
             {NavbarLinks.map((link, index) => (
@@ -85,11 +76,7 @@ function Navbar() {
                     >
                       <p>{link.title}</p>
                       <BsChevronDown />
-                      <div
-                        className={`absolute left-[50%] top-[50%] z-[1000] flex w-[200px] translate-x-[-50%] translate-y-[3em] flex-col rounded-lg bg-richblack-5 p-4 text-richblack-900 opacity-0 transition-all duration-150 ${
-                          showSublistMenu ? "visible" : "invisible"
-                        } lg:w-[300px]`}
-                      >
+                      <div className="invisible absolute left-[50%] top-[50%] z-[1000] flex w-[200px] translate-x-[-50%] translate-y-[3em] flex-col rounded-lg bg-richblack-5 p-4 text-richblack-900 opacity-0 transition-all duration-150 group-hover:visible group-hover:translate-y-[1.65em] group-hover:opacity-100 lg:w-[300px]">
                         <div className="absolute left-[50%] top-0 -z-10 h-6 w-6 translate-x-[80%] translate-y-[-40%] rotate-45 select-none rounded bg-richblack-5"></div>
                         {loading ? (
                           <p className="text-center">Loading...</p>
@@ -135,6 +122,7 @@ function Navbar() {
             ))}
           </ul>
         </nav>
+        {/* Login / Signup / Dashboard */}
         <div className="hidden items-center gap-x-4 md:flex">
           {user && user?.accountType !== ACCOUNT_TYPE.INSTRUCTOR && (
             <Link to="/dashboard/cart" className="relative">
@@ -162,9 +150,12 @@ function Navbar() {
           )}
           {token !== null && <ProfileDropdown />}
         </div>
+        <button className="mr-4 md:hidden" onClick={showMobileNav}>
+          <AiOutlineMenu fontSize={24} fill="#AFB2BF" />
+        </button>
       </div>
       {showMobileNavbar && (
-        <div className="md:hidden fixed overflow-y-hidden h-full top-[60px] left-0 right-0 bg-richblack-800 z-10 py-2">
+        <div className="md:hidden fixed h-full top-[60px] left-0 right-0 bg-richblack-800 z-10 py-2">
           <ul className="text-richblack-25 text-center py-5">
             {NavbarLinks.map((link, index) => (
               <li key={index} className="py-5">
