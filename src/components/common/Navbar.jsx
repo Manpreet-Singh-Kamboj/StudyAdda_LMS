@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { AiOutlineMenu, AiOutlineShoppingCart } from "react-icons/ai";
 import { BsChevronDown } from "react-icons/bs";
-import { useSelector } from "react-redux";
-import { Link, matchPath, useLocation } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, matchPath, useLocation, useNavigate } from "react-router-dom";
 
 import logo from "../../assets/Logo/rzp_logo.jpg";
 import { NavbarLinks } from "../../data/navbar-links";
@@ -10,6 +10,8 @@ import { apiConnector } from "../../services/apiconnector";
 import { categories } from "../../services/apis";
 import { ACCOUNT_TYPE } from "../../utils/constants";
 import ProfileDropdown from "../core/Auth/ProfileDropDown";
+import { logout } from "../../services/operations/authAPI";
+import { VscSignOut } from "react-icons/vsc";
 
 function Navbar() {
   const { token } = useSelector((state) => state.auth);
@@ -20,6 +22,8 @@ function Navbar() {
   const [showSublistMenu, setShowSublistMenu] = useState(false);
   const [subLinks, setSubLinks] = useState([]);
   const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     (async () => {
@@ -155,7 +159,7 @@ function Navbar() {
         </button>
       </div>
       {showMobileNavbar && (
-        <div className="md:hidden fixed h-full top-[60px] left-0 right-0 bg-richblack-800 z-10 py-2">
+        <div className="md:hidden fixed h-full top-[50px] left-0 right-0 bg-richblack-800 z-10 py-2">
           <ul className="text-richblack-25 text-center py-5">
             {NavbarLinks.map((link, index) => (
               <>
@@ -206,6 +210,24 @@ function Navbar() {
                     Sign up
                   </button>
                 </Link>
+              )}
+              {token && (
+                <Link to="/dashboard/my-profile" onClick={showMobileNav}>
+                  <button className="rounded-[8px] border border-richblack-700 bg-richblack-800 px-[12px] py-[8px] text-richblack-100">
+                    Dashboard
+                  </button>
+                </Link>
+              )}
+              {token != null && (
+                <div
+                  onClick={() => {
+                    dispatch(logout(navigate));
+                  }}
+                  className="rounded-[8px] flex border items-center gap-2 border-richblack-700 bg-richblack-800 px-[12px] py-[8px] text-richblack-100 hover:text-richblack-25"
+                >
+                  <VscSignOut className="text-lg" />
+                  Logout
+                </div>
               )}
             </div>
           </ul>
