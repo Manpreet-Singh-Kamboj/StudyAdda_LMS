@@ -15,7 +15,7 @@ import Dashboard from "./pages/Dashboard";
 import PrivateRoute from "./components/core/Auth/PrivateRoute";
 import Error from "./pages/Error";
 import Settings from "./components/core/Dashboard/Settings";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import EnrolledCourses from "./components/core/Dashboard/EnrolledCourses";
 import Cart from "./components/core/Dashboard/Cart";
 import { ACCOUNT_TYPE } from "./utils/constants";
@@ -29,9 +29,6 @@ import VideoDetails from "./components/core/ViewCourse/VideoDetails";
 import Instructor from "./components/core/Dashboard/InstructorDashboard/Instructor";
 
 function App() {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-
   const { user } = useSelector((state) => state.profile);
 
   return (
@@ -39,111 +36,113 @@ function App() {
       <div className="fixed w-[100%] top-0 z-[1000] bg-richblack-800">
         <Navbar />
       </div>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="catalog/:catalogName" element={<Catalog />} />
-        <Route path="courses/:courseId" element={<CourseDetails />} />
+      <div className="mt-10">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="catalog/:catalogName" element={<Catalog />} />
+          <Route path="courses/:courseId" element={<CourseDetails />} />
 
-        <Route
-          path="signup"
-          element={
-            <OpenRoute>
-              <Signup />
-            </OpenRoute>
-          }
-        />
-        <Route
-          path="login"
-          element={
-            <OpenRoute>
-              <Login />
-            </OpenRoute>
-          }
-        />
+          <Route
+            path="signup"
+            element={
+              <OpenRoute>
+                <Signup />
+              </OpenRoute>
+            }
+          />
+          <Route
+            path="login"
+            element={
+              <OpenRoute>
+                <Login />
+              </OpenRoute>
+            }
+          />
 
-        <Route
-          path="forgot-password"
-          element={
-            <OpenRoute>
-              <ForgotPassword />
-            </OpenRoute>
-          }
-        />
+          <Route
+            path="forgot-password"
+            element={
+              <OpenRoute>
+                <ForgotPassword />
+              </OpenRoute>
+            }
+          />
 
-        <Route
-          path="verify-email"
-          element={
-            <OpenRoute>
-              <VerifyEmail />
-            </OpenRoute>
-          }
-        />
+          <Route
+            path="verify-email"
+            element={
+              <OpenRoute>
+                <VerifyEmail />
+              </OpenRoute>
+            }
+          />
 
-        <Route
-          path="update-password/:id"
-          element={
-            <OpenRoute>
-              <UpdatePassword />
-            </OpenRoute>
-          }
-        />
+          <Route
+            path="update-password/:id"
+            element={
+              <OpenRoute>
+                <UpdatePassword />
+              </OpenRoute>
+            }
+          />
 
-        <Route path="/about" element={<About />} />
-        <Route path="/contact" element={<Contact />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
 
-        <Route
-          element={
-            <PrivateRoute>
-              <Dashboard />
-            </PrivateRoute>
-          }
-        >
-          <Route path="dashboard/my-profile" element={<MyProfile />} />
+          <Route
+            element={
+              <PrivateRoute>
+                <Dashboard />
+              </PrivateRoute>
+            }
+          >
+            <Route path="dashboard/my-profile" element={<MyProfile />} />
 
-          <Route path="dashboard/Settings" element={<Settings />} />
+            <Route path="dashboard/Settings" element={<Settings />} />
 
-          {user?.accountType === ACCOUNT_TYPE.STUDENT && (
-            <>
-              <Route path="dashboard/cart" element={<Cart />} />
-              <Route
-                path="dashboard/enrolled-courses"
-                element={<EnrolledCourses />}
-              />
-            </>
-          )}
+            {user?.accountType === ACCOUNT_TYPE.STUDENT && (
+              <>
+                <Route path="dashboard/cart" element={<Cart />} />
+                <Route
+                  path="dashboard/enrolled-courses"
+                  element={<EnrolledCourses />}
+                />
+              </>
+            )}
 
-          {user?.accountType === ACCOUNT_TYPE.INSTRUCTOR && (
-            <>
-              <Route path="dashboard/instructor" element={<Instructor />} />
-              <Route path="dashboard/add-course" element={<AddCourse />} />
-              <Route path="dashboard/my-courses" element={<MyCourses />} />
-              <Route
-                path="dashboard/edit-course/:courseId"
-                element={<EditCourse />}
-              />
-            </>
-          )}
-        </Route>
+            {user?.accountType === ACCOUNT_TYPE.INSTRUCTOR && (
+              <>
+                <Route path="dashboard/instructor" element={<Instructor />} />
+                <Route path="dashboard/add-course" element={<AddCourse />} />
+                <Route path="dashboard/my-courses" element={<MyCourses />} />
+                <Route
+                  path="dashboard/edit-course/:courseId"
+                  element={<EditCourse />}
+                />
+              </>
+            )}
+          </Route>
 
-        <Route
-          element={
-            <PrivateRoute>
-              <ViewCourse />
-            </PrivateRoute>
-          }
-        >
-          {user?.accountType === ACCOUNT_TYPE.STUDENT && (
-            <>
-              <Route
-                path="view-course/:courseId/section/:sectionId/sub-section/:subSectionId"
-                element={<VideoDetails />}
-              />
-            </>
-          )}
-        </Route>
+          <Route
+            element={
+              <PrivateRoute>
+                <ViewCourse />
+              </PrivateRoute>
+            }
+          >
+            {user?.accountType === ACCOUNT_TYPE.STUDENT && (
+              <>
+                <Route
+                  path="view-course/:courseId/section/:sectionId/sub-section/:subSectionId"
+                  element={<VideoDetails />}
+                />
+              </>
+            )}
+          </Route>
 
-        <Route path="*" element={<Error />} />
-      </Routes>
+          <Route path="*" element={<Error />} />
+        </Routes>
+      </div>
     </div>
   );
 }
